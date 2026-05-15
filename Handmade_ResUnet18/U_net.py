@@ -9,6 +9,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose, concatenate, BatchNormalization, Activation , Add
 from tensorflow.keras.layers import Input
 from sklearn.model_selection import train_test_split
+from tensorflow.keras.optimizers import Adam
 from torch import Tensor, mode
 
 
@@ -112,10 +113,10 @@ model = Model(inputs=input_layer, outputs=output_layer)
 
 model.summary()
 
-model.compile(optimizer='adam', loss='mean_absolute_error', metrics=['mse'])
+model.compile(optimizer=Adam(learning_rate=0.0001), loss='mean_absolute_error', metrics=['mse'])
 
 # 1. Save the training process to a variable
-history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=40, batch_size=16, verbose=1)
+history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=25, batch_size=16, verbose=1)
 
 # 2. Extract the loss data
 training_loss = history.history['loss']
@@ -132,6 +133,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
 plt.grid(True)
+plt.savefig('training_validation_loss.png')
 plt.show()
 
 model.save("resunet_mri_model.keras")
