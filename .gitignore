@@ -1,6 +1,5 @@
 resunet34_model_mri.pth
 Group 9/
-Outputs/
 *.npy
 *.pth
 *.keras
