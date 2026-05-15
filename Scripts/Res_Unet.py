@@ -19,7 +19,7 @@ class Config:
     batch_size = 4
     learning_rate = 1e-4
     epochs = 40
-    train_test_ratio = 0.1
+    train_test_ratio = 0.4
 
     @classmethod
     def plotting_loss(cls, train_losses, val_losses):

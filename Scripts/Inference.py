@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from torch import nn
 import Res_Unet as resunet
 from Res_Unet import Config
+from Data_prep import Data_Handler
 
 
 
@@ -35,14 +36,17 @@ class inf_model:
             return predictions.cpu().permute(0, 2, 3, 1).numpy()
         
 inf = inf_model()
-inf.load_weights("resunet_mri_model.pth")
+inf.load_weights("resunet34_model_mri.pth")
 
 X = np.load("Outputs/X_data_mri.npy")
+print("Loaded X_data_mri.npy, Data shape: ", X.shape)
 y = np.load("Outputs/y_data_mri.npy")
 
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=Config.train_test_ratio)
 
-test_val = X_val[:5]  # Take the first 5 samples from the validation set for inference
+test_val = X_val[:3]  # Take the first 3 samples from the validation set for inference
 predictions = inf.predict(test_val)
 
-print(f"X_val Shape: {X_val.shape}, y_val Shape: {y_val.shape}")
+print(f"Test Validation shape: {test_val.shape}, X_val Shape: {X_val.shape}")
+
+Data_Handler.plot_grid(X=test_val, y=y_val[:3], type="PREDICT", predictions=predictions)
